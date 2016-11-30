@@ -1,0 +1,12 @@
+diff -ruN freemarker-2.3.23.orig/source/src/main/java/freemarker/template/LocalizedString.java freemarker-2.3.23/source/src/main/java/freemarker/template/LocalizedString.java
+--- freemarker-2.3.23.orig/source/src/main/java/freemarker/template/LocalizedString.java	2015-07-05 10:47:06.000000000 -0400
++++ freemarker-2.3.23/source/src/main/java/freemarker/template/LocalizedString.java	2016-01-05 13:06:17.511844735 -0500
+@@ -30,7 +30,7 @@
+  *            if "fr".equals(lang)
+  *               return "oui";
+  *            else if "de".equals(lang)
+- *               return "sí";
++ *               return "s\u00ED";
+  *            else
+  *               return "yes";
+  *        }  

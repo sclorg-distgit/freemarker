@@ -1,0 +1,86 @@
+--- freemarker-2.3.23.orig/source/build.xml	2016-01-05 13:51:18.913881273 -0500
++++ freemarker-2.3.23/source/build.xml	2016-01-05 16:04:10.790446860 -0500
+@@ -1007,29 +1007,8 @@
+   >
+     <echo>Getting dependencies...</echo>
+     <echo>-------------------------------------------------------</echo>
+-    <ivy:settings id="remote" url="http://freemarker.org/repos/ivy/ivysettings-remote.xml" />
+     <!-- Build an own repository that will serve us even offline: -->
+-    <ivy:retrieve settingsRef="remote" sync="true"
+-      ivypattern=".ivy.part/repo/[organisation]/[module]/ivy-[revision].xml"
+-      pattern=".ivy.part/repo/[organisation]/[module]/[artifact]-[revision].[ext]"
+-    />
+-    <echo>-------------------------------------------------------</echo>
+-    <echo>*** Successfully acquired dependencies from the Web ***</echo>
+-    <echo>Eclipse users: Now right-click on ivy.xml and Resolve! </echo>
+-    <echo>-------------------------------------------------------</echo>
+-    <!-- Only now that we got all the dependencies will we delete anything. -->
+-    <!-- Thus a net or repo outage doesn't left us without the dependencies. -->
+-
+-    <!-- Save the resolution cache from the soon coming <delete>: -->
+-    <move todir=".ivy.part/update-deps-reso-cache">
+-      <fileset dir=".ivy/update-deps-reso-cache" />
+-    </move>
+-    <!-- Drop all the old stuff: -->
+-    <delete dir=".ivy" />
+-    <!-- And use the new stuff instead: -->
+-    <move todir=".ivy">
+-      <fileset dir=".ivy.part" />
+-    </move>
++    <ivy:retrieve sync="true"/>
+   </target>
+ 
+   <!-- Do NOT call this from 'clean'; offline guys would stuck after that. -->
+--- freemarker-2.3.23.orig/source/ivy.xml	2016-01-05 13:51:18.900881078 -0500
++++ freemarker-2.3.23/source/ivy.xml	2016-01-06 11:56:54.313942232 -0500
+@@ -83,7 +83,7 @@
+   <dependencies>
+     <!-- build -->
+     
+-    <dependency org="jaxen" name="jaxen" rev="1.0-FCS" conf="build.base->default" />
++    <dependency org="jaxen" name="jaxen" rev="1.1.6" conf="build.base->default" />
+     <dependency org="saxpath" name="saxpath" rev="1.0-FCS" conf="build.base->default" />
+     <dependency org="xalan" name="xalan" rev="2.7.0" conf="build.base->default">
+       <!-- The lowerst supported xml-apis version depends on JDK version; prevent any collosion: -->
+@@ -97,12 +97,10 @@
+       <exclude org="xml-apis" module="xml-apis" />
+     </dependency>
+     
+-    <dependency org="javax.servlet.jsp" name="jsp-api" rev="1.2" conf="build.jsp1.2->default" />
+-    <dependency org="javax.servlet" name="servlet-api" rev="2.3" conf="build.jsp1.2->default" />
+-    <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.0" conf="build.jsp2.0->default; example.struts-webapp->default" />
+-    <dependency org="javax.servlet" name="servlet-api" rev="2.4" conf="build.jsp2.0->default; example.servlet->default" />
+-    <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.1" conf="build.jsp2.1->default" />
+-    <dependency org="javax.servlet" name="servlet-api" rev="2.5" conf="build.jsp2.1->default" />
++    <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.2" conf="build.jsp2.0->default; example.struts-webapp->default" />
++    <dependency org="javax.servlet" name="javax.servlet-api" rev="2.7" conf="build.jsp2.0->default; example.servlet->default" />
++    <dependency org="javax.servlet.jsp" name="jsp-api" rev="2.2" conf="build.jsp2.1->default" />
++    <dependency org="javax.servlet" name="javax.servlet-api" rev="2.7" conf="build.jsp2.1->default" />
+     
+     <dependency org="rhino" name="js" rev="1.6R1" conf="build.base->default" />
+ 
+@@ -137,17 +135,6 @@
+     <dependency org="org.eclipse.jetty" name="jetty-jsp" rev="&jetty.version;" conf="test->default" />
+     <dependency org="org.eclipse.jetty" name="jetty-util" rev="&jetty.version;" conf="test->default" />
+     
+-    <dependency org="displaytag" name="displaytag" rev="1.2" conf="test->default">
+-      <exclude org="com.lowagie" name="itext" />
+-      <exclude org="org.slf4j" name="slf4j-log4j12" />
+-      <exclude org="org.slf4j" name="jcl104-over-slf4j" />
+-      <exclude org="log4j" name="log4j" />
+-    </dependency>
+-    
+-    <!-- docs -->
+-    
+-    <dependency org="org.freemarker" name="docgen" rev="2.0-branch-head" conf="manual->default" changing="true" />
+-    
+     <!-- parser -->
+     
+     <dependency org="net.java.dev.javacc" name="javacc" rev="3.2" conf="parser->default" />
+@@ -164,4 +151,4 @@
+     <conflict org="javax.servlet.jsp" module="jsp-api" manager="strict" />
+     
+   </dependencies>
+-</ivy-module>
+\ No newline at end of file
++</ivy-module>
